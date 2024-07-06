@@ -30,4 +30,104 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .content-auto {
+    content-visibility: auto;
+  }
+}
+
+@layer base {
+  .page-layout {
+    @apply flex min-h-screen flex-col items-center;
+  }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+  h2 {
+    @apply text-3xl font-bold;
+  }
+  h3 {
+    @apply text-2xl font-bold;
+  }
+  h4 {
+    @apply text-xl font-bold;
+  }
+
+  /*custom buttons*/
+  .btn-small {
+    @apply text-xs font-bold py-2 px-3 rounded;
+  }
+  .btn:disabled {
+    @apply bg-transparent text-gray-400 border border-gray-400;
+  }
+  .btn-green-outline {
+    @apply rounded-md bg-green-50 text-green-700 border border-green-600/20;
+  }
+  .btn-green-outline:hover {
+    @apply bg-green-100;
+  }
+  .btn-green-outline:disabled {
+    @apply bg-transparent text-gray-400 border border-gray-400;
+  }
+
+  /*custom badge*/
+  .badge-gray {
+    @apply inline-flex rounded-full p-2 text-xs font-bold bg-transparent text-gray-400 border border-gray-400;
+  }
+
+  /* Extra small devices (phones, 600px and down) */
+  @media only screen and (max-width: 599px) {
+    .page-layout {
+      @apply px-2 py-4 mx-2;
+    }
+    h1 {
+      @apply text-2xl;
+    }
+    h4 {
+      @apply text-base;
+    }
+  }
+
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    .page-layout {
+      @apply px-2 py-4 mx-2;
+    }
+  }
+
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    .page-layout {
+      @apply px-2 py-8 mx-4;
+    }
+  }
+
+  /* Large devices (large portrait tablets/laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    .page-layout {
+      @apply mx-10 px-4 py-8;
+    }
+  }
+
+  /* Extra large devices (large laptops and desktops, 1280px and up) */
+  @media only screen and (min-width: 1280px) {
+    .page-layout {
+      @apply mx-56 px-4 py-10;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply block p-4 text-left border border-blue-200 border-dashed rounded-2xl bg-white relative;
+  }
+  .card .info {
+    @apply mt-1 text-xs;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .card {
+      @apply w-auto h-auto;
+    }
+  }
 }
