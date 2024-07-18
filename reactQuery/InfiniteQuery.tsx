@@ -6,7 +6,7 @@ import { UserData } from "@/types/allTypes";
 import ItemList from "@/components/ItemList";
 
 export default function InfiniteQuery() {
-  const MAX_PAGE_LIMIT = 100;
+  const MAX_PAGE_LIMIT = 8;
 
   const fetchUsersInfinite = async ({
     pageParam,
