@@ -1,4 +1,4 @@
-## Data Fetching Using React Query
+## Data Fetching With React Query
 
 This small project primarily includes the setup and use of React-Query library (TanStack Query) for advanced data fetching with real world scenarios.
 
