@@ -10,7 +10,7 @@ Three different frontend API calls for data fetching (list of users) with real w
 2. Paginated query - to enable pagination with the list
 3. Infinite query - to enable infinite loading with the list
 
-Note: Open source mock backend APIs from http://dummmyjson.com have been used for this purpose.
+Note: Open source mock backend APIs from http://dummyjson.com have been used for this purpose.
 
 ## Basic List:
 ![basic](https://github.com/user-attachments/assets/215e080d-95c1-4310-a35e-3d096d254afb)
