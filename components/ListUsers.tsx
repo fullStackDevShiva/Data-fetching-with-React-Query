@@ -4,7 +4,7 @@ import { User } from "../types/allTypes";
 import Image from "next/image";
 
 // A common component to render all the users
-const ItemList = ({ users }: { users: User[] }) => {
+const ListUsers = ({ users }: { users: User[] }) => {
   return (
     <div className="user-list w-full grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 my-4">
       {users?.map((user: User) => {
@@ -29,4 +29,4 @@ const ItemList = ({ users }: { users: User[] }) => {
   );
 };
 
-export default ItemList;
+export default ListUsers;

@@ -3,7 +3,7 @@
 import React from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { UserData } from "@/types/allTypes";
-import ItemList from "@/components/ItemList";
+import ListUsers from "@/components/ListUsers";
 
 export default function InfiniteQuery() {
   const MAX_PAGE_LIMIT = 8;
@@ -77,8 +77,8 @@ export default function InfiniteQuery() {
 
           {data?.pages?.map((page, index) => (
             <React.Fragment key={index}>
-              {/* Using ItemList component to render the list */}
-              <ItemList users={page.users} />
+              {/* Using ListUsers component to render the list */}
+              <ListUsers users={page.users} />
             </React.Fragment>
           ))}
           <div className="load-more-btns w-full flex justify-center mt-8">
