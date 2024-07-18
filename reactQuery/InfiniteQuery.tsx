@@ -1,22 +1,30 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { User } from "../types/allTypes";
-import ItemList from "../components/ItemList";
 import React from "react";
-
-const pageLimit = 8;
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { UserData } from "@/types/allTypes";
+import ItemList from "@/components/ItemList";
 
 export default function InfiniteQuery() {
-  const fetchUsersInfinite = async ({ pageParam }: { pageParam: number }) => {
+  const MAX_PAGE_LIMIT = 100;
+
+  const fetchUsersInfinite = async ({
+    pageParam,
+  }: {
+    pageParam: number;
+  }): Promise<UserData> => {
     try {
       const response = await fetch(
-        `http://localhost:5000/users?_page=${pageParam}&_limit=${pageLimit}`
-      );
+        `http://dummyjson.com/users?page=${pageParam}&limit=${MAX_PAGE_LIMIT}&skip=${
+          (pageParam - 1) * MAX_PAGE_LIMIT
+        }`
+      ); // as per dummyjson API, need to set page, limit and skip values
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      return response.json();
+      const userData = response.json();
+      console.log(userData);
+      return userData;
     } catch (error) {
       console.error(error);
       throw error;
@@ -25,45 +33,52 @@ export default function InfiniteQuery() {
 
   const {
     data,
+    isLoading,
+    isError,
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
-    status,
   } = useInfiniteQuery({
-    queryKey: ["infinite-list"],
+    queryKey: ["infinite_list"],
     queryFn: fetchUsersInfinite,
-    initialPageParam: 0,
+    initialPageParam: 1,
     //when the API returns a cursor use the following function definition
     // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
 
     //if the API doesn't return a cursor, we can use the pageParam as a cursor as follows
     getNextPageParam: (lastPage, allPages, lastPageParam) => {
-      if (lastPage.length === 0) {
+      if (lastPage?.users?.length === 0) {
         return undefined;
       }
       return lastPageParam + 1;
     },
+    // getNextPageParam: (lastPage, allPages) => {
+    //   if (lastPage.length === 0) {
+    //     return undefined;
+    //   }
+    //   return allPages.length + 1;
+    // },
   });
+
+  console.log(data);
+
+  if (isError) return <p className="mt-20">Error: {error.message}</p>;
+  if (isLoading) return <p className="mt-20">Loading...</p>;
 
   return (
     <div className="infinite-list">
-      {status === "pending" ? (
-        <p className="mt-20">Loading...</p>
-      ) : status === "error" ? (
-        <p className="mt-20">Error: {error.message}</p>
-      ) : (
+      {data && data?.pages ? (
         <div className="infinite-list-item">
           <p className="text-sm text-center">
-            <span className="font-bold">Infinite</span> - loading 8 items per
+            <span className="font-bold">Infinite loading</span> - 8 items per
             fetch
           </p>
 
-          {data.pages.map((users: User[], index) => (
+          {data?.pages?.map((page, index) => (
             <React.Fragment key={index}>
               {/* Using ItemList component to render the list */}
-              <ItemList users={users} />
+              <ItemList users={page.users} />
             </React.Fragment>
           ))}
           <div className="load-more-btns w-full flex justify-center mt-8">
@@ -79,8 +94,9 @@ export default function InfiniteQuery() {
                 : "Nothing more to load"}
             </button>
           </div>
-          {/* <div>{isFetching && !isFetchingNextPage ? "Fetching..." : null}</div> */}
         </div>
+      ) : (
+        <p>Users not found!</p>
       )}
     </div>
   );

@@ -1,85 +1,84 @@
 "use client";
 
 import { useState } from "react";
+import { User, UserData } from "../types/allTypes";
 import { useQuery } from "@tanstack/react-query";
-import { User } from "../types/allTypes";
-import ItemList from "../components/ItemList";
+import UserCard from "../components/UserCard";
 
-//type for the query response
-interface PaginatedData {
-  data: User[];
-  next: number | null;
-  prev: number | null;
-  pages: number | null;
-}
-
-async function fetchUsersPaginated(page: number): Promise<PaginatedData> {
-  try {
-    const response = await fetch(`http://localhost:5000/users?_page=${page}`);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    // console.log(response.json());
-    return response.json();
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-}
-
-export default function PaginatedQuery() {
+const PaginatedQuery = () => {
   const [page, setPage] = useState(1);
+  const MAX_PAGE_LIMIT = 8; // setting page limit 8
+
+  const fetchUsersPaginated = async (page: number): Promise<UserData> => {
+    try {
+      const response = await fetch(
+        `http://dummyjson.com/users?page=${page}&limit=${MAX_PAGE_LIMIT}&skip=${
+          (page - 1) * MAX_PAGE_LIMIT
+        }`
+      ); // as per dummyjson API, we need to set page, limit and skip values to fetch paginated list
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const responseData = response.json();
+      console.log(responseData);
+      return responseData;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["paginated_query", page],
+    queryKey: ["paginated_list", page],
     queryFn: () => fetchUsersPaginated(page),
     keepPreviousData: true,
   });
 
+  if (isError) return <p className="mt-20">Error: {error.message}</p>;
+  if (isLoading) return <p className="mt-20">Loading...</p>;
+
   return (
     <div className="paginated-list">
-      {isLoading ? (
-        <p className="mt-20">Loading...</p>
-      ) : isError ? (
-        <p className="mt-20">Error: {error.message}</p>
-      ) : (
+      {data && data?.users?.length > 0 ? (
         <div className="paginated-list-items">
           <p className="text-sm text-center">
             <span className="font-bold">Paginated</span> - page {page} of{" "}
-            {data?.pages} pages
+            {Math.ceil(data.total / data.limit)} pages
           </p>
 
-          {/* Using ItemList component to render the list */}
-          <ItemList users={data.data} />
+          {/* Using UserCard component to render the user details */}
+          <div className="user-list w-full grid xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 my-4">
+            {data.users.map((user: User) => {
+              return <UserCard user={user} key={user.id} />;
+            })}
+          </div>
 
-          <div className="pages-btns w-full justify-center mt-8">
+          <div className="pages-btns flex w-full justify-center items-center mt-8">
             <button
               className="btn btn-small btn-green-outline mr-6"
-              onClick={() => setPage((old) => Math.max(old - 1, 1))}
+              onClick={() => setPage((page) => page - 1)}
               disabled={page === 1}
             >
               Previous Page
             </button>
-
-            {/* <span className="mx-6 inline-flex rounded-full p-2 text-xs font-bold bg-transparent text-gray-700 border border-gray-700">
-              {page}
-            </span> */}
-            <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+            <span className="bg-blue-100 text-blue-800 text-sm font-bold px-4 py-2 rounded dark:bg-blue-900 dark:text-blue-300">
               {page}
             </span>
 
             <button
               className="btn btn-small btn-green-outline ml-6"
-              onClick={() =>
-                setPage((old) => (data.next != null ? old + 1 : old))
-              }
-              disabled={data.next == null}
+              onClick={() => setPage((page) => page + 1)}
+              disabled={page === Math.ceil(data.total / data.limit)}
             >
               Next Page
             </button>
           </div>
         </div>
+      ) : (
+        <p>Users not found!</p>
       )}
     </div>
   );
-}
+};
+
+export default PaginatedQuery;
