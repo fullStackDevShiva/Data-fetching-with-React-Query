@@ -2,6 +2,16 @@
 
 This small project primarily includes the setup and use of React-Query library (TanStack Query) for advanced data fetching with real world scenarios.
 
+## Techstack/Tools used
+
+- React Query
+- Next Js
+- React
+- Typescript
+- Tailwind CSS
+- Mock backend API - http://dummyjson.com
+
+  
 ## Functionality
 
 Three different frontend API calls for data fetching (list of users) with real world scenarios.
@@ -25,11 +35,3 @@ Note: Open source mock backend APIs from http://dummyjson.com have been used for
 
 ![infinite2](https://github.com/user-attachments/assets/6f98ab67-c347-4a94-a5d6-c0e8d5a08983)
 
-## Techstack/Tools used
-
-- React Query
-- Next Js
-- React
-- Typescript
-- Tailwind CSS
-- Mock backend API - http://dummyjson.com
