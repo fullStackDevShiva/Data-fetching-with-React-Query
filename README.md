@@ -14,9 +14,9 @@ Note: Open source mock backend APIs from http://dummmyjson.com have been used fo
 
 ## Techstack/Tools used
 
-React Query
-Next Js
-React
-Typescript
-Tailwind CSS
-Mock backend API - http://dummyjson.com
+- React Query
+- Next Js
+- React
+- Typescript
+- Tailwind CSS
+- Mock backend API - http://dummyjson.com
