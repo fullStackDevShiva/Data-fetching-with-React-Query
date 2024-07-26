@@ -4,7 +4,7 @@ This small project primarily includes the setup and use of React-Query library (
 
 ## Techstack/Tools used
 
-- React Query
+- React Query (TanStack Query)
 - Next Js
 - React
 - Typescript
@@ -14,9 +14,9 @@ This small project primarily includes the setup and use of React-Query library (
   
 ## Functionality
 
-Three different frontend API calls for data fetching (list of users) with real world scenarios.
+Three different frontend API calls to fetch list of users from the database.
 
-1. Basic query - to fetch all users at once and list them
+1. Basic query - to fetch all the users at once and list them in a single page
 2. Paginated query - to enable pagination with the list
 3. Infinite query - to enable infinite loading with the list
 
